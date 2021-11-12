@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">JustoTestApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_data_user">Datos generales del Usuario</string>
+    <string name="profile">Perfil de usuario</string>
+    <string name="user_address">Consultar dirección</string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
