@@ -9,7 +9,7 @@
         android:id="@+id/userListFragment"
         android:name="com.example.justotestapp.ui.userlist.UserListFragment"
         android:label="fragment_user_list"
-        tools:layout="@layout/fragment_user_list" >
+        tools:layout="@layout/fragment_user_list">
         <action
             android:id="@+id/action_userListFragment_to_userDetailFragment"
             app:destination="@id/userDetailFragment"
