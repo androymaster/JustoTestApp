@@ -51,10 +51,10 @@ class UserDetailFragment : Fragment(R.layout.fragment_user_detail) {
             val locState = user.state
             val location = LatLng(lat!!.toDouble(), long!!.toDouble())
             val cameraPosition = CameraPosition.Builder()
-                .target(location) // Sets the center of the map to Mountain View
-                .zoom(4f)         // Sets the zoom
-                .bearing(90f)     // Sets the orientation of the camera to east
-                .tilt(30f)        // Sets the tilt of the camera to 30 degrees
+                .target(location)
+                .zoom(4f)
+                .bearing(90f)
+                .tilt(30f)
                 .build()
             googleMap.addMarker(MarkerOptions().position(location).title("Marker in $locState"))
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
@@ -63,6 +63,5 @@ class UserDetailFragment : Fragment(R.layout.fragment_user_detail) {
 
         mapFragment = childFragmentManager.findFragmentById(R.id.maps) as SupportMapFragment
         mapFragment.getMapAsync(callback)
-
     }
 }

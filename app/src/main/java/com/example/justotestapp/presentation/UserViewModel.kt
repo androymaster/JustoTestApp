@@ -19,16 +19,6 @@ class UserViewModel(private val repo: UserRepository): ViewModel() {
         }
     }
 
-    fun getNewUser() = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-        emit(Resource.Loading())
-        try {
-            emit(Resource.Success(repo.getNewUser()))
-        } catch (e: Exception) {
-            emit(Resource.Failure(e))
-        }
-    }
-
-
     fun getUserLocal() = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
         emit(Resource.Loading())
         try {

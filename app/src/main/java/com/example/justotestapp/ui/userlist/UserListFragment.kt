@@ -1,9 +1,12 @@
 package com.example.justotestapp.ui.userlist
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -130,7 +133,6 @@ class UserListFragment : Fragment(R.layout.fragment_user_list), UserAdapter.OnUs
     private fun saveNewUser(user: UserEntity){
             viewModel.addUser(user)
             setupChangeList()
-            Toast.makeText(context,"Se agrego un nuevo usuario", Toast.LENGTH_SHORT).show()
     }
 
     private fun setupRecyclerView(){

@@ -6,4 +6,5 @@
     <string name="profile">Perfil de usuario</string>
     <string name="user_address">Consultar dirección</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="message_new_user">Agrega un nuevo usuario dando click al <b>+</b> de la barra de arriba</string>
 </resources>
