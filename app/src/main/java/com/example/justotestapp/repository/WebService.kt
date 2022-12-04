@@ -1,22 +1,15 @@
 package com.example.justotestapp.repository
 
 import com.example.justotestapp.application.AppConstants
-import com.example.justotestapp.data.model.DataUser
+import com.example.justotestapp.data.model.ApiResponse
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Query
 
 interface WebService {
-    @GET("api")
-    suspend fun getUsers(@Query("results") results: Int): DataUser
-
-    @GET("api")
-    suspend fun getUsersFemale(
-        @Query("results") results: Int,
-        @Query("gender") gender: String
-    ): DataUser
+    @GET("?inc=name,location,picture")
+    suspend fun getUser(): ApiResponse
 }
 
 object RetrofitClient {

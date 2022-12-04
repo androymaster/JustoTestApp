@@ -1,18 +1,35 @@
 package com.example.justotestapp.presentation
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.justotestapp.core.Resource
+import com.example.justotestapp.data.model.UserEntity
 import com.example.justotestapp.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class UserViewModel(private val repo: UserRepository): ViewModel() {
 
-    fun getUsers() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
+    fun getUsersRemote() = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.getUserRemote()))
+        } catch (e: Exception) {
+            emit(Resource.Failure(e))
+        }
+    }
+
+    fun getNewUser() = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(repo.getNewUser()))
+        } catch (e: Exception) {
+            emit(Resource.Failure(e))
+        }
+    }
+
+
+    fun getUserLocal() = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
         emit(Resource.Loading())
         try {
             emit(Resource.Success(repo.getAllUser()))
@@ -21,12 +38,15 @@ class UserViewModel(private val repo: UserRepository): ViewModel() {
         }
     }
 
-    fun getUsersFemale() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
-        emit(Resource.Loading())
-        try {
-            emit(Resource.Success(repo.getAllUserFemale()))
-        } catch (e: Exception) {
-            emit(Resource.Failure(e))
+    fun addUser(user: UserEntity){
+        viewModelScope.launch(Dispatchers.IO){
+           repo.addUser(user)
+       }
+    }
+
+    fun deleteUser(toDelete: UserEntity){
+        viewModelScope.launch(Dispatchers.IO){
+            repo.deleteUser(toDelete)
         }
     }
 }

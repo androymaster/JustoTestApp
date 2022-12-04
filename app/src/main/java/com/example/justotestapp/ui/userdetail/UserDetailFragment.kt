@@ -1,55 +1,68 @@
 package com.example.justotestapp.ui.userdetail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.justotestapp.R
+import com.example.justotestapp.data.model.User
 import com.example.justotestapp.databinding.FragmentUserDetailBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.Gson
 
 class UserDetailFragment : Fragment(R.layout.fragment_user_detail) {
 
     private lateinit var binding: FragmentUserDetailBinding
-    private val args by navArgs<UserDetailFragmentArgs>()
-
-    private val callback = OnMapReadyCallback { googleMap ->
-        val lat = args.latitude
-        val long = args.longitude
-        val locState = args.state
-        val location = LatLng(long.toDouble(), lat.toDouble())
-        googleMap.addMarker(MarkerOptions().position(location).title("Marker in $locState"))
-        //googleMap.addMarker(MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
-    }
+    private lateinit var user: User
+    private lateinit var mapFragment: SupportMapFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUserDetailBinding.bind(view)
 
+        requireArguments().let {
+            user = it.getParcelable("user")!!
+        }
+
         binding = FragmentUserDetailBinding.bind(view)
-        binding.ivProfile.load("${args.photouser}")
-        binding.nameUser.text = args.nameuser
-        binding.genderUser.text = args.gender
-        binding.mailUser.text = args.email
-        binding.phoneNumber.text = args.phonenumber
-        binding.celNumber.text = args.celphone
-        binding.idName.text = args.namecard
-        binding.userNat.text = args.nat
+        binding.ivProfile.load("${user.thumbnail}")
+        binding.nameUser.text = user.first
+        binding.lastnameUser.text = user.last
 
-        val street = args.streetname
-        val number = args.streetnumber
-        val city = args.city
-        val state = args.state
-        binding.addressUser.text = "$street $number  $city  $state"
+        Log.i("testLog", "setupObserver result.data -> ${Gson().toJson(user)}")
+        val street = user.location
+        val state = user.state
+        binding.addressUser.text = "$street $state"
+    }
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.maps) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+    override fun onResume() {
+        super.onResume()
+
+        val callback = OnMapReadyCallback { googleMap ->
+            val lat = user.latitude
+            val long = user.longitude
+            val locState = user.state
+            val location = LatLng(lat!!.toDouble(), long!!.toDouble())
+            val cameraPosition = CameraPosition.Builder()
+                .target(location) // Sets the center of the map to Mountain View
+                .zoom(4f)         // Sets the zoom
+                .bearing(90f)     // Sets the orientation of the camera to east
+                .tilt(30f)        // Sets the tilt of the camera to 30 degrees
+                .build()
+            googleMap.addMarker(MarkerOptions().position(location).title("Marker in $locState"))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        }
+
+        mapFragment = childFragmentManager.findFragmentById(R.id.maps) as SupportMapFragment
+        mapFragment.getMapAsync(callback)
 
     }
 }

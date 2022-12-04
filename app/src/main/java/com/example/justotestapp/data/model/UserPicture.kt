@@ -1,7 +1,5 @@
 package com.example.justotestapp.data.model
 
-data class Picture(
-    val large: String?,
-    val medium: String?,
+data class UserPicture(
     val thumbnail: String?
 )
